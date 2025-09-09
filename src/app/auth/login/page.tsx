@@ -260,7 +260,7 @@ const LoginPage = () => {
       <FadeInElement delay={1000}>
         <div className="mt-8 text-center">
           <p className="text-gray-600 font-semibold">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link
               href={"/auth/signup"}
               className="font-black text-black hover:text-gray-700 transition-colors"
