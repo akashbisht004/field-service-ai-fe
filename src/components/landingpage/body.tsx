@@ -69,7 +69,7 @@ const Body = () => {
             {industries.map((industry, index) => (
               <div
                 key={index}
-                className=" p-6 rounded-xl z-20 bg-gray-100 hover:shadow-xl transition-all"
+                className=" p-6 rounded-xl z-20 bg-gray-100 hover:shadow-xl hover:scale-105 transition-all"
               >
                 <h3 className="text-xl font-bold mb-2">{industry.name}</h3>
                 <p className="text-gray-600">{industry.description}</p>

@@ -9,8 +9,8 @@ const Hero = () => {
       <section className="min-h-screen flex items-center px-4 sm:px-6 lg:px-8">
 
         <FadeInElement className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
+          <div className="grid lg:grid-cols-2 gap-30 items-center">
+            <div className="space-y-8 ">
               <FadeInElement delay={300} className="space-y-4">
                 <h1 className="text-6xl lg:text-7xl font-extrabold leading-tight">
                   <AnimatedText text="AI-Powered"/>

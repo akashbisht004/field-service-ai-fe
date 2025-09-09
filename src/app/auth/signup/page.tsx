@@ -1,26 +1,21 @@
 "use client";
 
-import React, { useState, useEffect,ReactNode, ChangeEvent } from 'react';
-import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Sparkles, Shield } from 'lucide-react';
-import Link from 'next/link';
-
-interface FadeInElementProps {
-  children: ReactNode;
-  delay?: number;
-  className?: string;
-}
-
-interface AnimatedWordProps {
-  word: string;
-  delay: number;
-  className?: string;
-}
-
-interface AnimatedTextProps {
-  text: string;
-  className?: string;
-}
-
+import React, { useState, ChangeEvent } from "react";
+import {
+  Mail,
+  Lock,
+  User,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  Sparkles,
+  Shield,
+} from "lucide-react";
+import Link from "next/link";
+import {
+  AnimatedText,
+  FadeInElement,
+} from "@/components/animated/animatedElements";
 
 interface AuthInputProps {
   type?: string;
@@ -38,62 +33,6 @@ interface FormErrors {
   [key: string]: boolean | undefined;
 }
 
-const FadeInElement = ({ children, delay = 0, className = "" }: FadeInElementProps) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, delay);
-
-    return () => clearTimeout(timer);
-  }, [delay]);
-
-  return (
-    <div className={`transition-all duration-700 ${className} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-      {children}
-    </div>
-  );
-};
-
-const AnimatedWord = ({ word, delay, className = "" }:AnimatedWordProps) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, delay * 100);
-
-    return () => clearTimeout(timer);
-  }, [delay]);
-
-  return (
-    <span
-      className={`mr-2 inline-block transition-all duration-500 ${className} ${isVisible
-          ? 'opacity-100 blur-0 translate-y-0'
-          : 'opacity-0 blur-sm translate-y-2'
-        }`}
-    >
-      {word}
-    </span>
-  );
-};
-
-const AnimatedText = ({ text, className = "" }:AnimatedTextProps) => {
-  return (
-    <>
-      {text.split(" ").map((word, index) => (
-        <AnimatedWord
-          key={index}
-          word={word}
-          delay={index}
-          className={className}
-        />
-      ))}
-    </>
-  );
-};
-
 // Input Component
 const AuthInput = ({
   type = "text",
@@ -102,25 +41,36 @@ const AuthInput = ({
   value,
   onChange,
   showPasswordToggle = false,
-  error = false
-}:AuthInputProps) => {
+  error = false,
+}: AuthInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
-  const inputType = showPasswordToggle ? (showPassword ? "text" : "password") : type;
+  const inputType = showPasswordToggle
+    ? showPassword
+      ? "text"
+      : "password"
+    : type;
 
   return (
     <div className="relative group">
       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-        <Icon className={`w-5 h-5 transition-colors ${error ? 'text-red-500' : 'text-gray-400 group-focus-within:text-black'}`} />
+        <Icon
+          className={`w-5 h-5 transition-colors ${
+            error
+              ? "text-red-500"
+              : "text-gray-400 group-focus-within:text-black"
+          }`}
+        />
       </div>
       <input
         type={inputType}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className={`w-full pl-12 pr-12 py-4 bg-white border-2 transition-all duration-300 rounded-xl font-semibold placeholder-gray-500 focus:outline-none ${error
-            ? 'border-red-500 focus:border-red-600 bg-red-50'
-            : 'border-gray-200 focus:border-black hover:border-gray-300'
-          }`}
+        className={`w-full pl-12 pr-12 py-4 bg-white border-2 transition-all duration-300 rounded-xl font-semibold placeholder-gray-500 focus:outline-none ${
+          error
+            ? "border-red-500 focus:border-red-600 bg-red-50"
+            : "border-gray-200 focus:border-black hover:border-gray-300"
+        }`}
       />
       {showPasswordToggle && (
         <button
@@ -142,21 +92,21 @@ const AuthInput = ({
 // Main Auth Component
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    firstName: '',
-    lastName: '',
-    company: ''
+    email: "",
+    password: "",
+    confirmPassword: "",
+    firstName: "",
+    lastName: "",
+    company: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
 
-  const handleInputChange = (field:string, value:string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: false }));
+      setErrors((prev) => ({ ...prev, [field]: false }));
     }
   };
 
@@ -172,7 +122,7 @@ const SignUpPage = () => {
 
   return (
     <div className="min-h-screen bg-white text-black font-sans overflow-x-hidden">
-      {/* Main Container with Aceternity Borders */}
+      {/* Main Container */}
       <div className="relative mx-auto my-10 flex max-w-2xl flex-col items-center justify-center min-h-[90vh]">
         {/* Border Effects */}
         <div className="absolute inset-y-0 left-0 h-full w-px bg-neutral-200">
@@ -184,8 +134,16 @@ const SignUpPage = () => {
         <div className="absolute inset-x-0 bottom-0 h-px w-full bg-neutral-200">
           <div className="absolute mx-auto h-px w-40 bg-gradient-to-r from-transparent via-black to-transparent" />
         </div>
+        <div className="absolute inset-x-0 top-0 h-px w-full bg-neutral-200">
+          <div className="absolute mx-auto h-px w-40 bg-gradient-to-r from-transparent via-black to-transparent" />
+        </div>
         {/* Auth Content */}
-        <div className="px-4 py-10 md:py-20 w-full">
+        <div
+          className="px-4 py-10 md:py-20 w-full relative"
+          style={{
+            background: `linear-gradient(to bottom, rgba(245,245,245,0) 0%, rgba(245,245,245,1) 50%, rgba(245,245,245,0) 100%)`,
+          }}
+        >
           <FadeInElement className="w-full max-w-md mx-auto">
             <div className="text-center mb-8">
               <h1 className="text-4xl md:text-5xl font-black text-slate-800 mb-4">
@@ -206,7 +164,9 @@ const SignUpPage = () => {
                     placeholder="First name"
                     icon={User}
                     value={formData.firstName}
-                    onChange={(e) => handleInputChange('firstName', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("firstName", e.target.value)
+                    }
                     error={errors.firstName}
                   />
                   <AuthInput
@@ -214,7 +174,9 @@ const SignUpPage = () => {
                     placeholder="Last name"
                     icon={User}
                     value={formData.lastName}
-                    onChange={(e) => handleInputChange('lastName', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("lastName", e.target.value)
+                    }
                     error={errors.lastName}
                   />
                 </div>
@@ -224,7 +186,7 @@ const SignUpPage = () => {
                   placeholder="Work email address"
                   icon={Mail}
                   value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
                   error={errors.email}
                 />
 
@@ -233,7 +195,7 @@ const SignUpPage = () => {
                   placeholder="Company name"
                   icon={Sparkles}
                   value={formData.company}
-                  onChange={(e) => handleInputChange('company', e.target.value)}
+                  onChange={(e) => handleInputChange("company", e.target.value)}
                   error={errors.company}
                 />
 
@@ -242,7 +204,9 @@ const SignUpPage = () => {
                   placeholder="Create password"
                   icon={Lock}
                   value={formData.password}
-                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("password", e.target.value)
+                  }
                   showPasswordToggle
                   error={errors.password}
                 />
@@ -252,7 +216,9 @@ const SignUpPage = () => {
                   placeholder="Confirm password"
                   icon={Shield}
                   value={formData.confirmPassword}
-                  onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("confirmPassword", e.target.value)
+                  }
                   showPasswordToggle
                   error={errors.confirmPassword}
                 />
@@ -265,10 +231,20 @@ const SignUpPage = () => {
                     className="w-4 h-4 text-black border-2 border-gray-300 rounded focus:ring-black mt-1"
                   />
                   <label className="text-sm font-semibold text-gray-600 leading-relaxed cursor-pointer">
-                    I agree to the{' '}
-                    <a href="#" className="text-black font-black hover:text-gray-700">Terms of Service</a>
-                    {' '}and{' '}
-                    <a href="#" className="text-black font-black hover:text-gray-700">Privacy Policy</a>
+                    I agree to the{" "}
+                    <a
+                      href="#"
+                      className="text-black font-black hover:text-gray-700"
+                    >
+                      Terms of Service
+                    </a>{" "}
+                    and{" "}
+                    <a
+                      href="#"
+                      className="text-black font-black hover:text-gray-700"
+                    >
+                      Privacy Policy
+                    </a>
                   </label>
                 </div>
 
@@ -292,7 +268,7 @@ const SignUpPage = () => {
             <FadeInElement delay={1000}>
               <div className="mt-8 text-center">
                 <p className="text-gray-600 font-semibold">
-                  Already have an account?{' '}
+                  Already have an account?{" "}
                   <Link
                     href={"/auth/login"}
                     className="font-black text-black hover:text-gray-700 transition-colors"

@@ -3,7 +3,10 @@
 import React, { useState, ChangeEvent } from "react";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { AnimatedText, FadeInElement } from "@/components/animated/animatedElements";
+import {
+  AnimatedText,
+  FadeInElement,
+} from "@/components/animated/animatedElements";
 
 interface AuthInputProps {
   type?: string;
@@ -110,7 +113,7 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-white text-black font-sans overflow-x-hidden">
-      {/* Main Container with Aceternity Borders */}
+      {/* Main Container */}
       <div className="relative mx-auto my-10 flex max-w-2xl flex-col items-center justify-center min-h-[90vh]">
         {/* Border Effects */}
         <div className="absolute inset-y-0 left-0 h-full w-px bg-neutral-200">
@@ -122,9 +125,17 @@ const LoginPage = () => {
         <div className="absolute inset-x-0 bottom-0 h-px w-full bg-neutral-200">
           <div className="absolute mx-auto h-px w-40 bg-gradient-to-r from-transparent via-black to-transparent" />
         </div>
+        <div className="absolute inset-x-0 top-0 h-px w-full bg-neutral-200">
+          <div className="absolute mx-auto h-px w-40 bg-gradient-to-r from-transparent via-black to-transparent" />
+        </div>
 
         {/* Auth Content */}
-        <div className="px-4 py-10 md:py-20 w-full">
+        <div
+          className="px-4 py-10 md:py-20 w-full relative"
+          style={{
+            background: `linear-gradient(to bottom, rgba(245,245,245,0) 0%, rgba(245,245,245,1) 50%, rgba(245,245,245,0) 100%)`,
+          }}
+        >
           <FadeInElement className="w-full max-w-md mx-auto">
             <div className="text-center mb-8">
               <h1 className="text-4xl md:text-5xl font-black text-slate-800 mb-4">
