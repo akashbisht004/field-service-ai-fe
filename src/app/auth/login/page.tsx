@@ -1,26 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, ChangeEvent, ReactNode } from 'react';
-import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
-
-interface FadeInElementProps {
-  children: ReactNode;
-  delay?: number;
-  className?: string;
-}
-
-interface AnimatedWordProps {
-  word: string;
-  delay: number;
-  className?: string;
-}
-
-interface AnimatedTextProps {
-  text: string;
-  className?: string;
-}
-
+import React, { useState, ChangeEvent } from "react";
+import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { AnimatedText, FadeInElement } from "@/components/animated/animatedElements";
 
 interface AuthInputProps {
   type?: string;
@@ -38,62 +21,6 @@ interface FormErrors {
   [key: string]: boolean | undefined;
 }
 
-const FadeInElement = ({ children, delay = 0, className = "" }: FadeInElementProps) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, delay);
-
-    return () => clearTimeout(timer);
-  }, [delay]);
-
-  return (
-    <div className={`transition-all duration-700 ${className} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-      {children}
-    </div>
-  );
-};
-
-const AnimatedWord = ({ word, delay, className = "" }:AnimatedWordProps) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, delay * 100);
-
-    return () => clearTimeout(timer);
-  }, [delay]);
-
-  return (
-    <span
-      className={`mr-2 inline-block transition-all duration-500 ${className} ${isVisible
-          ? 'opacity-100 blur-0 translate-y-0'
-          : 'opacity-0 blur-sm translate-y-2'
-        }`}
-    >
-      {word}
-    </span>
-  );
-};
-
-const AnimatedText = ({ text, className = "" }:AnimatedTextProps) => {
-  return (
-    <>
-      {text.split(" ").map((word, index) => (
-        <AnimatedWord
-          key={index}
-          word={word}
-          delay={index}
-          className={className}
-        />
-      ))}
-    </>
-  );
-};
-
 // Input Component
 const AuthInput = ({
   type = "text",
@@ -102,25 +29,36 @@ const AuthInput = ({
   value,
   onChange,
   showPasswordToggle = false,
-  error = false
-}:AuthInputProps) => {
+  error = false,
+}: AuthInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
-  const inputType = showPasswordToggle ? (showPassword ? "text" : "password") : type;
+  const inputType = showPasswordToggle
+    ? showPassword
+      ? "text"
+      : "password"
+    : type;
 
   return (
     <div className="relative group">
       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-        <Icon className={`w-5 h-5 transition-colors ${error ? 'text-red-500' : 'text-gray-400 group-focus-within:text-black'}`} />
+        <Icon
+          className={`w-5 h-5 transition-colors ${
+            error
+              ? "text-red-500"
+              : "text-gray-400 group-focus-within:text-black"
+          }`}
+        />
       </div>
       <input
         type={inputType}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className={`w-full pl-12 pr-12 py-4 bg-white border-2 transition-all duration-300 rounded-xl font-semibold placeholder-gray-500 focus:outline-none ${error
-            ? 'border-red-500 focus:border-red-600 bg-red-50'
-            : 'border-gray-200 focus:border-black hover:border-gray-300'
-          }`}
+        className={`w-full pl-12 pr-12 py-4 bg-white border-2 transition-all duration-300 rounded-xl font-semibold placeholder-gray-500 focus:outline-none ${
+          error
+            ? "border-red-500 focus:border-red-600 bg-red-50"
+            : "border-gray-200 focus:border-black hover:border-gray-300"
+        }`}
       />
       {showPasswordToggle && (
         <button
@@ -142,27 +80,27 @@ const AuthInput = ({
 // Main Auth Component
 const LoginPage = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    firstName: '',
-    lastName: '',
-    company: ''
+    email: "",
+    password: "",
+    confirmPassword: "",
+    firstName: "",
+    lastName: "",
+    company: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleInputChange = (field:string, value:string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: false }));
+      setErrors((prev) => ({ ...prev, [field]: false }));
     }
   };
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
@@ -174,7 +112,6 @@ const LoginPage = () => {
     <div className="min-h-screen bg-white text-black font-sans overflow-x-hidden">
       {/* Main Container with Aceternity Borders */}
       <div className="relative mx-auto my-10 flex max-w-2xl flex-col items-center justify-center min-h-[90vh]">
-    
         {/* Border Effects */}
         <div className="absolute inset-y-0 left-0 h-full w-px bg-neutral-200">
           <div className="absolute top-0 h-40 w-px bg-gradient-to-b from-transparent via-black to-transparent" />
@@ -188,89 +125,93 @@ const LoginPage = () => {
 
         {/* Auth Content */}
         <div className="px-4 py-10 md:py-20 w-full">
-         <FadeInElement className="w-full max-w-md mx-auto">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl md:text-5xl font-black text-slate-800 mb-4">
-          <AnimatedText text="Welcome Back" />
-        </h1>
-        <FadeInElement delay={600}>
-          <p className="text-lg text-gray-600 font-semibold">
-            Sign in to your Field Service AI account
-          </p>
-        </FadeInElement>
-      </div>
+          <FadeInElement className="w-full max-w-md mx-auto">
+            <div className="text-center mb-8">
+              <h1 className="text-4xl md:text-5xl font-black text-slate-800 mb-4">
+                <AnimatedText text="Welcome Back" />
+              </h1>
+              <FadeInElement delay={600}>
+                <p className="text-lg text-gray-600 font-semibold">
+                  Sign in to your Field Service AI account
+                </p>
+              </FadeInElement>
+            </div>
 
-      <FadeInElement delay={800}>
-        <div className="space-y-6">
-          <AuthInput
-            type="email"
-            placeholder="Enter your email"
-            icon={Mail}
-            value={formData.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
-            error={errors.email}
-          />
-          
-          <AuthInput
-            type="password"
-            placeholder="Enter your password"
-            icon={Lock}
-            value={formData.password}
-            onChange={(e) => handleInputChange('password', e.target.value)}
-            showPasswordToggle
-            error={errors.password}
-          />
+            <FadeInElement delay={800}>
+              <div className="space-y-6">
+                <AuthInput
+                  type="email"
+                  placeholder="Enter your email"
+                  icon={Mail}
+                  value={formData.email}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  error={errors.email}
+                />
 
-          <div className="flex items-center justify-between">
-            <label className="flex items-center space-x-2 cursor-pointer">
-              <input 
-                type="checkbox" 
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 text-black border-2 border-gray-300 rounded focus:ring-black" 
-              />
-              <span className="text-sm font-semibold text-gray-600">Remember me</span>
-            </label>
-            <Link
-              type="button"
-              href={"/auth/forgot-password"}
-              className="text-sm font-bold text-black hover:text-gray-700 transition-colors"
-            >
-              Forgot password?
-            </Link>
-          </div>
+                <AuthInput
+                  type="password"
+                  placeholder="Enter your password"
+                  icon={Lock}
+                  value={formData.password}
+                  onChange={(e) =>
+                    handleInputChange("password", e.target.value)
+                  }
+                  showPasswordToggle
+                  error={errors.password}
+                />
 
-          <button
-            onClick={handleSubmit}
-            disabled={isLoading}
-            className="w-full bg-black text-white py-4 rounded-xl font-black text-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-800 hover:shadow-xl flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? (
-              <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            ) : (
-              <>
-                <span>Sign In</span>
-                <ArrowRight className="w-5 h-5" />
-              </>
-            )}
-          </button>
-        </div>
-      </FadeInElement>
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      className="w-4 h-4 text-black border-2 border-gray-300 rounded focus:ring-black"
+                    />
+                    <span className="text-sm font-semibold text-gray-600">
+                      Remember me
+                    </span>
+                  </label>
+                  <Link
+                    type="button"
+                    href={"/auth/forgot-password"}
+                    className="text-sm font-bold text-black hover:text-gray-700 transition-colors"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
 
-      <FadeInElement delay={1000}>
-        <div className="mt-8 text-center">
-          <p className="text-gray-600 font-semibold">
-            Don&apos;t have an account?{' '}
-            <Link
-              href={"/auth/signup"}
-              className="font-black text-black hover:text-gray-700 transition-colors"
-            >
-              Sign up
-            </Link>
-          </p>
-        </div>
-      </FadeInElement>
-    </FadeInElement>
+                <button
+                  onClick={handleSubmit}
+                  disabled={isLoading}
+                  className="w-full bg-black text-white py-4 rounded-xl font-black text-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-800 hover:shadow-xl flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? (
+                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span>Sign In</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </FadeInElement>
+
+            <FadeInElement delay={1000}>
+              <div className="mt-8 text-center">
+                <p className="text-gray-600 font-semibold">
+                  Don&apos;t have an account?{" "}
+                  <Link
+                    href={"/auth/signup"}
+                    className="font-black text-black hover:text-gray-700 transition-colors"
+                  >
+                    Sign up
+                  </Link>
+                </p>
+              </div>
+            </FadeInElement>
+          </FadeInElement>
         </div>
       </div>
     </div>
